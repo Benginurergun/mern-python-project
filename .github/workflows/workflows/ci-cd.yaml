@@ -1,28 +1,34 @@
-name: CI Pipeline
+name: Python CI
 
 on:
   push:
-    branches: ["main"]
+    paths:
+      - 'python-project/**'
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          node-version: 18
+          python-version: '3.11'
 
-      - name: Install server deps
-        working-directory: ./server
-        run: npm install
+      - name: Install dependencies
+        run: |
+          cd python-project
+          pip install -r requirements.txt
 
-      - name: Install client deps
-        working-directory: ./client
-        run: npm install
+      - name: Run ETL script
+        run: |
+          cd python-project
+          python ETL.py
 
-      - name: Done
-        run: echo "CI successful"
+      - name: Build Docker image
+        run: |
+          cd python-project
+          docker build -t python-etl:latest .

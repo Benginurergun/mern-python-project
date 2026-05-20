@@ -1,12 +1,15 @@
 # Python ETL Project
 
 The Python project contains a simple ETL script.
-GitHub Actions is configured for CI checks.
-The ETL.py script is intended to run periodically.
 
 ## Files
 
-```text
-ETL.py
-requirements.txt
+- ETL.py
+- requirements.txt
+- Dockerfile
+
+A Kubernetes CronJob configuration is included to run the ETL job every hour.
+
+Kubernetes file are located under:
+k8s/python-cronjob.yaml
 
